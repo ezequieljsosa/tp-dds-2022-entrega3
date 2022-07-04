@@ -5,7 +5,7 @@ RUN mvn dependency:go-offline
 COPY src/ /build/src/
 RUN mvn package
 
-FROM openjdk:11-jdk-alpine
+FROM openjdk:11-jdk-slim
 COPY --from=build /build/target/ /app/
 WORKDIR /app
 RUN cp ejemplo_javalin-1.0-SNAPSHOT.jar dependency
