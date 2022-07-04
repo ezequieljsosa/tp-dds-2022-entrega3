@@ -20,7 +20,7 @@ public class AppLibrosTest {
     }
 
     @Test
-    public void GET_to_fetch_users_returns_list_of_users() {
+    public void test_upload_libro() {
         Libro libroTest = new Libro();
         libroTest.setNombre("mi plante");
         libroTest.setAutor("Vasconcelos");
