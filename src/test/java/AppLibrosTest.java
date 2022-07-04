@@ -12,7 +12,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class AppLibrosTest {
 
 
-
     @Test
     public void testAlgoQueDeberiaEstarBien() {
         Assertions.assertEquals(1,1);
