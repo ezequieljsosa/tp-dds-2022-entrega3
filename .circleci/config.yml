@@ -12,23 +12,23 @@ executors:
  docker-publisher: 
   docker: 
   - image: circleci/node:latest
-  auth:
-   username: $DOCKERHUB_USERNAME
-   password: $DOCKERHUB_PASSWORD
+    auth:
+      username: $DOCKERHUB_USERNAME
+      password: $DOCKERHUB_PASSWORD
 
 
 jobs:
   publishLatestToHub: 
     executor: docker-publisher
     steps: 
-    - checkout
-    - setup_remote_docker
-    - run:
-        name: Publish Docker Image to Docker Hub
-        command: |
-          echo “$DOCKERHUB_PASSWORD” | docker login -u “$DOCKERHUB_USERNAME” - password-stdin
-          docker build -t $IMAGE_NAME .
-          docker push $IMAGE_NAME:latest
+      - checkout
+      - setup_remote_docker
+      - run:
+          name: Publish Docker Image to Docker Hub
+          command: |
+            echo “$DOCKERHUB_PASSWORD” | docker login -u “$DOCKERHUB_USERNAME” - password-stdin
+            docker build -t $IMAGE_NAME .
+            docker push $IMAGE_NAME:latest
   say-hello:
     # Specify the execution environment. You can specify an image from Dockerhub or use one of our Convenience Images from CircleCI's Developer Hub.
     # See: https://circleci.com/docs/2.0/configuration-reference/#docker-machine-macos-windows-executor
