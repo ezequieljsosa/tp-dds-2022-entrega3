@@ -1,63 +1,69 @@
 package ar.edu.utn.dds.libros;
 
-import java.util.ArrayList;
+import javax.persistence.EntityManager;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 import java.util.Collection;
-import java.util.Optional;
-import java.util.OptionalLong;
-import java.util.stream.Collectors;
+
 
 public class RepoLibros {
+    /**
+     * Para mejor comprensión de las consultas, este link es un buen punto de inicio
+     * https://www.arquitecturajava.com/jpa-criteria-api-un-enfoque-diferente/
+     */
 
-    private Collection<Libro> libros;
+    private EntityManager entityManager;
 
-    public RepoLibros() {
-        this.libros = new ArrayList<>();
+    public RepoLibros(EntityManager em) {
+        this.entityManager = em;
     }
 
     public void delete(Libro libro) {
-        this.libros = this.libros.stream().filter(x -> !x.equals(libro)).collect(Collectors.toList());
+        this.entityManager.remove(libro);
     }
 
     public Long count() {
-        return this.libros.stream().count();
+        //https://stackoverflow.com/questions/2883887/in-jpa-2-using-a-criteriaquery-how-to-count-results
+        CriteriaBuilder qb = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Long> cq = qb.createQuery(Long.class);
+        cq.select(qb.count(cq.from(Libro.class)));
+        return entityManager.createQuery(cq).getSingleResult();
     }
 
     public boolean existsById(Long id) {
-        Optional<Libro> first = this.libros.stream().filter(x -> x.getId().equals(id)).findFirst();
-        return first.isPresent();
+        return entityManager.find(Libro.class,id) != null;
 
     }
 
     public Libro findById(Long id) {
-        Optional<Libro> first = this.libros.stream().filter(x -> x.getId().equals(id)).findFirst();
-        if (first.isPresent()) {
-            return first.get();
-        }
-        return null;
+        return entityManager.find(Libro.class,id) ;
     }
 
     public Collection<Libro> findByMaxPrecio(Long precioMax ) {
-        return this.libros.stream().filter(x -> x.getPrecio()< precioMax ).collect(Collectors.toList());
+        CriteriaBuilder cb = this.entityManager.getCriteriaBuilder();
+        CriteriaQuery<Libro> consulta = cb.createQuery(Libro.class);
+        Root<Libro> libros = consulta.from(Libro.class);
+        Predicate condicion = cb.greaterThanOrEqualTo(libros.get("precio"), precioMax);
+        CriteriaQuery<Libro> where = consulta.select(libros).where(condicion);
+        return this.entityManager.createQuery(where).getResultList();
 
     }
 
-    public Collection<Libro> find(Long precioMax ) {
-        return this.libros.stream().filter(x -> x.getPrecio()< precioMax ).collect(Collectors.toList());
 
-    }
 
     public Collection<Libro> findAll( ) {
-        return new ArrayList<>(this.libros);
+
+        CriteriaBuilder cb = this.entityManager.getCriteriaBuilder();
+        CriteriaQuery<Libro> consulta = cb.createQuery(Libro.class);
+        Root<Libro> libros = consulta.from(Libro.class);
+        return this.entityManager.createQuery(consulta.select(libros)).getResultList();
 
     }
 
     public Libro save(Libro libro) {
-        //No es thread safe...
-        OptionalLong max = this.libros.stream().mapToLong(x -> x.getId()).max();
-
-        Long nexid = (max.isPresent()) ? (max.getAsLong() + 1L) : 1 ;
-        libro.setId(nexid);
-        this.libros.add(libro);
+        this.entityManager.persist(libro);
         return libro;
     }
 

@@ -1,8 +1,16 @@
 package ar.edu.utn.dds.libros;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
+@Entity
 public class Libro {
 
+    @Id @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+
     private String nombre;
     private String autor;
     private Long precio;
