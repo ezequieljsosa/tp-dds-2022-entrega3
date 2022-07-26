@@ -1,8 +1,8 @@
 # tp-dds-2022-entrega3
 Ejemplo CRUD API JAVALIN para TP de dds 2022
 
-Tiene solo dependencia a Postgres, si van a usar otra db para pruebas locales, tienen
-que agregar la dependencia al pom.xml
+Tiene solo la dependencia a Postgres, si van a usar otra db para pruebas locales, tienen
+que agregar la misma al pom.xml
 
 ---
 Ejemplo para levantar postgres con Docker (no hace falta, pueden descargar el instalador directamente)
