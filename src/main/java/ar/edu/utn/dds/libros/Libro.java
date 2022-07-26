@@ -15,6 +15,8 @@ public class Libro {
     private String autor;
     private Long precio;
 
+
+
     public Long getId() {
         return id;
     }
@@ -46,4 +48,6 @@ public class Libro {
     public void setPrecio(Long precio) {
         this.precio = precio;
     }
+
+
 }

@@ -12,6 +12,7 @@ import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.Map;
 
+
 public class AppLibros {
 
     private Javalin app;
@@ -19,6 +20,7 @@ public class AppLibros {
     public Javalin javalinApp() {
         return app;
     }
+
 
     public static EntityManagerFactory entityManagerFactory;
 
@@ -65,11 +67,11 @@ public class AppLibros {
                     String username = dbUri.getUserInfo().split(":")[0];
                     String password = dbUri.getUserInfo().split(":")[1];
                     //javax.persistence.jdbc.url=jdbc:postgresql://localhost/dblibros
-                    value = "jdbc:postgresql://" + dbUri.getHost() + ':' + dbUri.getPort() + dbUri.getPath() ;// + "?sslmode=require";
+                    value = "jdbc:postgresql://" + dbUri.getHost() + ':' + dbUri.getPort() + dbUri.getPath();// + "?sslmode=require";
                     configOverrides.put("javax.persistence.jdbc.url", value);
                     configOverrides.put("javax.persistence.jdbc.user", username);
                     configOverrides.put("javax.persistence.jdbc.password", password);
-                  //  configOverrides.put("hibernate.dialect", "org.hibernate.dialect.PostgreSQLDialect");
+                    //  configOverrides.put("hibernate.dialect", "org.hibernate.dialect.PostgreSQLDialect");
 
                 }
                 if (key.equals("ddlauto")) {
@@ -86,6 +88,7 @@ public class AppLibros {
 
     }
 
+
     public void start() {
         app.start(getHerokuAssignedPort());
     }
@@ -98,12 +101,10 @@ public class AppLibros {
         return 7000;
     }
 
-    public static void main(String[] args) throws URISyntaxException {
+    public static void main(String[] args) throws Exception {
         AppLibros app = new AppLibros();
-
         app.init();
         app.start();
-
     }
 
     private static Handler RouteWithTransaction(WithTransaction fn) {

@@ -4,12 +4,15 @@ import io.javalin.http.Context;
 
 import javax.persistence.EntityManager;
 
+
 public class LibrosController {
 
     private RepoLibros repo;
 
+
     public LibrosController(RepoLibros repo) {
         this.repo = repo;
+
     }
 
     public static void list(Context ctx, EntityManager em) {
@@ -39,11 +42,14 @@ public class LibrosController {
         ctx.json("deleted");
     }
 
+
     public static void create(Context ctx, EntityManager em) {
         RepoLibros repo = new RepoLibros(em);
         Libro libro = ctx.bodyAsClass(Libro.class);
         repo.save(libro);
-        ctx.json(libro);
         ctx.status(201);
     }
+
+
+
 }

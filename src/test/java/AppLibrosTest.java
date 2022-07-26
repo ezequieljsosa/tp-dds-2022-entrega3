@@ -12,11 +12,19 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class AppLibrosTest {
 
 
-    @Test
-    public void testAlgoQueDeberiaEstarBien() {
-        Assertions.assertEquals(1,1);
+    static Javalin app;
+
+    @BeforeAll
+    public static void init() throws Exception {
+        AppLibros appLibros = new AppLibros();
+        appLibros.init();
+        app = appLibros.javalinApp();
     }
 
+    @Test
+    public void testAlgoQueDeberiaEstarBien() {
+        Assertions.assertEquals(1, 1);
+    }
 
 
 }
