@@ -5,10 +5,13 @@ version: 2.1
 # Define a job to be invoked later in a workflow.
 # See: https://circleci.com/docs/2.0/configuration-reference/#jobs
 orbs:
-  maven: circleci/maven@1.1
+  maven: circleci/maven@1.4.1
   docker: circleci/docker@1.5.0
 
 executors:
+ java17:
+    docker:
+      - image: 'cimg/openjdk:17.0'
  docker-publisher: 
   docker: 
   - image: circleci/node:latest
@@ -48,12 +51,15 @@ workflows:
   say-hello-workflow:
     jobs:
       - say-hello
-  maven_test:
-    jobs:
-      - maven/test
+  - maven/test:
+          command: '-X compile test'
+          executor: java17
   deploy:
     jobs:
       - publishLatestToHub
+
+
+
   
   
   
